@@ -1,48 +1,52 @@
-
 # Step 1: Import libraries
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Step 2: Load the dataset
-file_path = r"C:\Users\SRI LAKSHMI\Documents\Internship\Shell\Week1\waterquality.csv"
+# Step 2: Load dataset
+file_path = r"C:\Users\SRI LAKSHMI\Documents\Internship\Shell\Week1\waterquality.csv"   # change filename if needed
 df = pd.read_csv(file_path)
 
 # Step 3: Explore dataset
 print("Dataset Info:")
 print(df.info())
-print("\nSummary Statistics:")
+
+print("\nDataset Summary:")
 print(df.describe())
+
 print("\nMissing Values:")
 print(df.isnull().sum())
 
-# Step 4: Convert Date column to datetime & extract Year
-df['Date'] = pd.to_datetime(df['Date'], errors='coerce')  # convert to datetime
-df['Year'] = df['Date'].dt.year   # create a Year column
+# Step 4: Convert Date column to datetime and extract Year
+df['Date'] = pd.to_datetime(df['Date'], errors='coerce')   # coerce handles bad formats
+df['Year'] = df['Date'].dt.year
 
-# Step 5: Group data by Year
-yearly_data = df.groupby('Year').mean(numeric_only=True)
+# Step 5: Group data by Year (1989 - 2025)
+yearly_data = df.groupby('Year').mean(numeric_only=True).reset_index()
 
-print("\nYearly Averages:")
+print("\nYearly Average Data (1989-2025):")
 print(yearly_data.head())
 
-# Step 6: Plot graphs (Trends over Years)
+# Step 6: Plot graphs
 plt.figure(figsize=(12,6))
-sns.lineplot(x=yearly_data.index, y=yearly_data['Salinity (ppt)'], label="Salinity (ppt)")
-sns.lineplot(x=yearly_data.index, y=yearly_data['DissolvedOxygen (mg/L)'], label="Dissolved Oxygen (mg/L)")
-sns.lineplot(x=yearly_data.index, y=yearly_data['pH'], label="pH")
-plt.title("Water Quality Trends (1989 - 2019)")
+sns.lineplot(data=yearly_data, x="Year", y="DissolvedOxygen (mg/L)", marker="o", label="Dissolved Oxygen")
+sns.lineplot(data=yearly_data, x="Year", y="Salinity (ppt)", marker="o", label="Salinity")
+sns.lineplot(data=yearly_data, x="Year", y="pH", marker="o", label="pH")
+
+plt.title("Water Quality Parameters Over the Years (1989 - 2025)")
 plt.xlabel("Year")
-plt.ylabel("Value")
+plt.ylabel("Average Values")
 plt.legend()
+plt.grid(True)
 plt.show()
 
-# Extra: Temperature trends
+# Extra: Compare Water vs Air Temperature
 plt.figure(figsize=(12,6))
-sns.lineplot(x=yearly_data.index, y=yearly_data['WaterTemp (C)'], label="Water Temperature (°C)")
-sns.lineplot(x=yearly_data.index, y=yearly_data['AirTemp (C)'], label="Air Temperature (°C)")
-plt.title("Temperature Trends (1989 - 2019)")
+sns.lineplot(data=yearly_data, x="Year", y="WaterTemp (C)", marker="o", label="Water Temp")
+sns.lineplot(data=yearly_data, x="Year", y="AirTemp (C)", marker="o", label="Air Temp")
+plt.title("Water vs Air Temperature Over the Years")
 plt.xlabel("Year")
-plt.ylabel("Temperature (°C)")
+plt.ylabel("Average Temperature (°C)")
 plt.legend()
+plt.grid(True)
 plt.show()
