@@ -1,0 +1,23 @@
+# Step 1: Import necessary libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Step 2: Load the dataset
+file_path = r"C:\Users\SRI LAKSHMI\Documents\Internship\Shell\Week1\waterquality.csv"
+df = pd.read_csv(file_path)
+
+# Step 3: Explore the dataset
+
+# Info about dataset
+print("Dataset Info:")
+print(df.info())
+
+# Statistical summary
+print("\nDataset Description:")
+print(df.describe())
+
+# Missing values
+print("\nMissing Values:")
+print(df.isnull().sum())
