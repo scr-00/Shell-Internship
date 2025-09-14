@@ -1,0 +1,7 @@
+import joblib
+
+# Save scaler (if you used one, else skip)
+# For now, just saving the regression model
+joblib.dump(model, "regression_model.pkl")
+
+print("Model saved successfully!")
